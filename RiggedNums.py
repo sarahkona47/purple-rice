@@ -10,6 +10,13 @@ import random;
 # Probability for timer to stop
 probability = [(1, 1.5, 0.05), (1.5, 2, 0.3), (2, 4, 0.1), ()] # add more probability later
 
+# percentage of crashing between certain numners
+def percentNum():
+
+# Auto mode
+def auto():
+
+    
 # Creates a timer
 def random_timer():
     global intervals
