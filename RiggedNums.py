@@ -2,8 +2,13 @@ import time;
 import tkinter as tk;
 import random;
 
+# Need to add initial multiplier for crash
+# Need multiplier increase rate
+# Need average time to crash/probability for crash/cash-out probabilities (like 70% for most then rest)
+
+
 # Probability for timer to stop
-probability = [(1, 1.5, 0.05), (1.5, 2, 0.3), (2, 4, 0.1)] # add more probability later
+probability = [(1, 1.5, 0.05), (1.5, 2, 0.3), (2, 4, 0.1), ()] # add more probability later
 
 # Creates a timer
 def random_timer():
