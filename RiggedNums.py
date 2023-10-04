@@ -45,8 +45,8 @@ if __name__ == "__main__":
     
     rigged_timer(probability)
 
-    stopped_times = rigged_timer(probability)
+    previous_crashes = rigged_timer(probability)
     
     print("Previous")
-    for t in stopped_times:
+    for t in previous_crashes:
         print(f"{t:.2f}x")
