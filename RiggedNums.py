@@ -6,9 +6,6 @@ import random;
 # Need multiplier increase rate
 # Need average time to crash/probability for crash/cash-out probabilities (like 70% for most then rest)
 
-
-# Probability for timer to stop
-# probability = [(1, 1.5, 0.05), (1.5, 2, 0.3), (2, 4, 0.1)] # add more probability later
 def rigged_timer(probability):
     # Calculate the total probability for all time intervals
     total_probability = sum(probability.values())
@@ -28,11 +25,11 @@ def rigged_timer(probability):
             if elapsed_time >= stop_time:
                 break
         
-        # Display the elapsed time at a rate of 0.5 seconds per second
-        display_time = elapsed_time * 0.5
+        # Adjusts timer to increment slowly from 1.00x
+        display_time = (elapsed_time * 0.1) + 1
         print(f"{display_time:.2f}x", end="\r")
         
-        # Adjust the sleep time for smoother updates
+        # Make timer visualization smooth
         sleep_time = min(0.01, 0.5 - (current_time - start_time) % 0.5)
         time.sleep(sleep_time)
     
@@ -41,9 +38,9 @@ def rigged_timer(probability):
 if __name__ == "__main__":
     # Probability in crash times
     probability = {
-        5: 0.2,  # 20% 5 sec
-        8: 0.3,  # 30% 8 sec
-        10: 0.5  # 50% 10 sec
+        10: 0.2,  # 20% 5 sec
+        20: 0.3,  # 30% 8 sec
+        10: 0.1  # 50% 10 sec
     }
     
     rigged_timer(probability)

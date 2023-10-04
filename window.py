@@ -6,7 +6,7 @@ class Window:
     def __init__(self):
         self.win = tk.Tk()
         self.win.title("Chicken Gambling Simulator")
-        self.myCanvas = tk.Canvas(self.win, bg="purple", height=250, width=300)
+        self.myCanvas = tk.Canvas(self.win, bg="purple", height=700, width=1080)
         self.myCanvas.pack()
         self.win.mainloop()
 
