@@ -44,3 +44,9 @@ if __name__ == "__main__":
     }
     
     rigged_timer(probability)
+
+    stopped_times = rigged_timer(probability)
+    
+    print("Previous")
+    for t in stopped_times:
+        print(f"{t:.2f}x")

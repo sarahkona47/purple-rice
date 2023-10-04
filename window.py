@@ -9,7 +9,8 @@ class Window:
         self.myCanvas = tk.Canvas(self.win, bg="purple", height=700, width=1080)
         self.myCanvas.pack()
         self.win.mainloop()
+        
 
 #----------------- Main Program --------------------------
 window = Window()
-window.run()
+# window.run()
