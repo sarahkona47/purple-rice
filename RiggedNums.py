@@ -8,57 +8,42 @@ import random;
 
 
 # Probability for timer to stop
-probability = [(1, 1.5, 0.05), (1.5, 2, 0.3), (2, 4, 0.1), ()] # add more probability later
-
-# percentage of crashing between certain numners
-def percentNum():
-
-# Auto mode
-def auto():
-
+# probability = [(1, 1.5, 0.05), (1.5, 2, 0.3), (2, 4, 0.1)] # add more probability later
+def rigged_timer(probability):
+    # Calculate the total probability for all time intervals
+    total_probability = sum(probability.values())
     
-# Creates a timer
-def random_timer():
-    global intervals
-    selected_interval = random.choices(intervals, [p for _, _, p in intervals])[0]
-    start_time, end_time, _ = selected_interval
-    random_duration = random.uniform(start_time, end_time)
-    return random_duration
+    print(f"Start")
+    
+    # Start the timer
+    start_time = time.time()
+    
+    while True:
+        current_time = time.time()
+        elapsed_time = current_time - start_time
+        
+        # Check if the timer should stop based on the specified probabilities
+        if random.random() < total_probability:
+            stop_time = random.choices(list(probability.keys()), list(probability.values()))[0]
+            if elapsed_time >= stop_time:
+                break
+        
+        # Display the elapsed time at a rate of 0.5 seconds per second
+        display_time = elapsed_time * 0.5
+        print(f"{display_time:.2f}x", end="\r")
+        
+        # Adjust the sleep time for smoother updates
+        sleep_time = min(0.01, 0.5 - (current_time - start_time) % 0.5)
+        time.sleep(sleep_time)
+    
+    print("\nCrash")
 
-# This function stops the timer. 
-def random_timer_stop():
-    global timer_running, start_time
-    if timer_running:
-        timer_running = False
-        stopped_time = time.time() - start_time
-        timer_label.config(text=f"Stopped at {stopped_time:.2f} seconds")
-
-# Starts the timer.
-def timer_start():
-    global timer_running, stop_timer
-    if not timer_running:
-        timer_running = True
-        start_time = time.time()
-        timer_label.config(text="Timer is running...")
-        timer_duration = random_timer()
-        root.after(int(timer_duration * 1000), stop_timer)
-
-root = tk.Tk()
-root.title("Random Timer")
-
-timer_running = False
-start_time = 0
-
-timer_label = tk.Label(root, text="Click 'Start' to begin the timer.")
-timer_label.pack(pady=10)
-
-start_button = tk.Button(root, text="Start", command=start_timer)
-start_button.pack()
-
-stop_button = tk.Button(root, text="Stop", command=stop_timer)
-stop_button.pack()
-
-quit_button = tk.Button(root, text="Quit", command=root.quit)
-quit_button.pack()
-
-root.mainloop()
+if __name__ == "__main__":
+    # Probability in crash times
+    probability = {
+        5: 0.2,  # 20% 5 sec
+        8: 0.3,  # 30% 8 sec
+        10: 0.5  # 50% 10 sec
+    }
+    
+    rigged_timer(probability)
