@@ -1,52 +1,60 @@
-import time;
-import tkinter as tk;
-import random;
+import time
+import tkinter as tk
+import random
 
-# Need to add initial multiplier for crash
-# Need multiplier increase rate
-# Need average time to crash/probability for crash/cash-out probabilities (like 70% for most then rest)
+# Dictionary for rigged probabilities 
+probability = {}
 
-def rigged_timer(probability):
-    # Calculate the total probability for all time intervals
+def rigged_timer():
+    global probability 
+    # Total probability
     total_probability = sum(probability.values())
-    
+
     print(f"Start")
-    
-    # Start the timer
+
+    # Start crash
     start_time = time.time()
-    
+
     while True:
         current_time = time.time()
         elapsed_time = current_time - start_time
-        
-        # Check if the timer should stop based on the specified probabilities
+
+        # Stop time based on probabilities
         if random.random() < total_probability:
             stop_time = random.choices(list(probability.keys()), list(probability.values()))[0]
             if elapsed_time >= stop_time:
                 break
-        
-        # Adjusts timer to increment slowly from 1.00x
+
+        # Start from 1x incremental increase
         display_time = (elapsed_time * 0.1) + 1
         print(f"{display_time:.2f}x", end="\r")
-        
+
         # Make timer visualization smooth
         sleep_time = min(0.01, 0.5 - (current_time - start_time) % 0.5)
         time.sleep(sleep_time)
-    
+
     print("\nCrash")
 
 if __name__ == "__main__":
-    # Probability in crash times
-    probability = {
-        10: 0.2,  # 20% 5 sec
-        20: 0.3,  # 30% 8 sec
-        40: 0.02  # 50% 10 sec
-    }
-    
-    rigged_timer(probability)
+    # Probabilities based on grouping of min - max times
+    probability_ranges = [
+        {"min_time": 2, "max_time": 5, "total_probability": 0.02}, # 30% crash
+        {"min_time": 8, "max_time": 14, "total_probability": 0.2}, # 30% crash
+        {"min_time": 14, "max_time": 17, "total_probability": 0.4}, # 40% crash
+        {"min_time": 45, "max_time": 55, "total_probability": 0.2},
+        {"min_time": 60, "max_time": 70, "total_probability": 0.1},
+        {"min_time": 75, "max_time": 85, "total_probability": 0.05}
+    ]
 
-    previous_crashes = rigged_timer(probability)
-    
-    print("Previous")
-    for t in previous_crashes:
-        print(f"{t:.2f}x")
+    for range_info in probability_ranges:
+        min_time = range_info["min_time"]
+        max_time = range_info["max_time"]
+        total_probability = range_info["total_probability"]
+
+        num_intervals = max_time - min_time + 1
+        probability_per_interval = total_probability / num_intervals
+
+        for time_interval in range(min_time, max_time + 1):
+            probability[time_interval] = probability_per_interval
+
+    rigged_timer()
