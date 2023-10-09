@@ -40,7 +40,7 @@ if __name__ == "__main__":
     probability = {
         10: 0.2,  # 20% 5 sec
         20: 0.3,  # 30% 8 sec
-        10: 0.1  # 50% 10 sec
+        40: 0.02  # 50% 10 sec
     }
     
     rigged_timer(probability)
