@@ -35,6 +35,11 @@ def rigged_timer():
 
     print("\nCrash")
 
+def multiplier():
+    input_a = input()
+    print(type )
+
+
 if __name__ == "__main__":
     # Probabilities based on grouping of min - max times
     probability_ranges = [
