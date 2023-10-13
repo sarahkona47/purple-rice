@@ -1,29 +1,22 @@
 import time
-import tkinter as tk
 import random
 
-# Dictionary for rigged probabilities 
-probability = {}
+# List to store intervals
+intervals = []
 
 def rigged_timer():
-    global probability 
-    # Total probability
-    total_probability = sum(probability.values())
-
-    print(f"Start")
+    global intervals
 
     # Start crash
     start_time = time.time()
+    print("Start")
 
-    while True:
+    while intervals:
         current_time = time.time()
         elapsed_time = current_time - start_time
 
-        # Stop time based on probabilities
-        if random.random() < total_probability:
-            stop_time = random.choices(list(probability.keys()), list(probability.values()))[0]
-            if elapsed_time >= stop_time:
-                break
+        if elapsed_time >= intervals[0]:
+            intervals.pop(0)
 
         # Start from 1x incremental increase
         display_time = (elapsed_time * 0.1) + 1
@@ -35,20 +28,15 @@ def rigged_timer():
 
     print("\nCrash")
 
-def multiplier():
-    input_a = input()
-    print(type )
-
-
 if __name__ == "__main__":
     # Probabilities based on grouping of min - max times
     probability_ranges = [
-        {"min_time": 2, "max_time": 5, "total_probability": 0.02}, # 30% crash  # currently only taking in first probability range
-        {"min_time": 8, "max_time": 14, "total_probability": 0.4}, # 40% crash
-        {"min_time": 14, "max_time": 17, "total_probability": 0.3}, # 30% crash
-        {"min_time": 18, "max_time": 25, "total_probability": 0.2}, # 20% crash
-        {"min_time": 30, "max_time": 70, "total_probability": 0.05}, # 5% crash
-        {"min_time": 75, "max_time": 100, "total_probability": 0.01} # 1% crash
+        {"min_time": 2, "max_time": 5, "total_probability": 0.1},  # 2-5: 10% crash
+        {"min_time": 8, "max_time": 14, "total_probability": 0.1},  # 8-14: 10% crash
+        {"min_time": 16, "max_time": 25, "total_probability": 0.1},  # 16-25: 10% crash
+        {"min_time": 30, "max_time": 35, "total_probability": 0.1},  # 30-35: 10% crash
+        {"min_time": 40, "max_time": 45, "total_probability": 0.1},  # 40-45: 10% crash
+        {"min_time": 50, "max_time": 55, "total_probability": 0.1},  # 50-55: 10% crash
     ]
 
     for range_info in probability_ranges:
@@ -58,7 +46,12 @@ if __name__ == "__main__":
 
         num_intervals = max_time - min_time + 1
 
-    for time_interval in range(min_time, max_time + 1):
-        probability[time_interval] = total_probability / num_intervals
+        # Calculate the number of intervals based on the total probability
+        num_intervals_in_range = int(total_probability * num_intervals)
+
+        for _ in range(num_intervals_in_range):
+            intervals.append(random.randint(min_time, max_time))
+
+    random.shuffle(intervals)  # Shuffle the intervals to randomize their order
 
     rigged_timer()
