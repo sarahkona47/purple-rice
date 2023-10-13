@@ -6,8 +6,9 @@ intervals = []
 previous_crashes = []
 
 def simulate_crash():
-    global intervals, previous_crashes
+    global intervals, previous_crashes, variable
 
+    variable = float(input("Enter a value: ")) # used to bet
     # Start crash
     start_time = time.time()
     print("Start")
@@ -23,7 +24,7 @@ def simulate_crash():
         # Start from 1x incremental increase
         display_time = (elapsed_time * 0.1) + 1
         print(f"{display_time:.2f}x", end="\r")
-        
+        print(f"{display_time:.2f * variable}x", end="\r")
 
         # Make timer visualization smooth
         sleep_time = min(0.01, 0.5 - (current_time - start_time) % 0.5)
@@ -32,7 +33,7 @@ def simulate_crash():
     print("\nCrash")
     print("Previous crashes:")
     for crash_time in previous_crashes:
-        print(f"Crashed at {crash_time:.2f}x")
+        print(f"Crashed at {display_time:.2f}x")
 
 if __name__ == "__main__":
     # Probabilities based on grouping of min - max times
