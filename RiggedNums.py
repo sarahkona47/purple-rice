@@ -4,6 +4,7 @@ import random
 # List to store intervals
 intervals = []
 previous_crashes = []
+display_time = []
 
 def simulate_crash():
     global intervals, previous_crashes, variable
@@ -23,6 +24,7 @@ def simulate_crash():
 
         # another loop, display time should be array, loop over array and add crash time everytime it crashes 
         # Start from 1x incremental increase
+        
         display_time = (elapsed_time * 0.1) + 1
         print(f"{display_time:.2f}x", end="\r")
         # print(f"{display_time:.2f * variable}x", end="\r")
