@@ -17,6 +17,13 @@ function simulateCrash() {
                 const crashedInterval = intervals.shift();
                 previousCrashes.push(crashedInterval);
 
+                console.log("\nCrash");
+                console.log(`Crashed at ${crashedInterval.toFixed(2)}x`);
+                console.log("Previous crashes:");
+                for (const crashTime of previousCrashes) {
+                    console.log(`Crashed at ${crashTime.toFixed(2)}x`);
+                }
+
                 // Break out of the loop after the first crash
                 break;
             }
@@ -24,12 +31,6 @@ function simulateCrash() {
             // Make timer visualization smooth
             const sleepTime = Math.min(10, 500 - (currentTime - startTime) % 500);
             await sleep(sleepTime);
-        }
-
-        console.log("\nCrash");
-        console.log("Previous crashes:");
-        for (const crashTime of previousCrashes) {
-            console.log(`Crashed at ${crashTime.toFixed(2)}x`);
         }
     })();
 }
