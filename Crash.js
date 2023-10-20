@@ -1,51 +1,82 @@
-// Declare Variables
-const previous_crashes = [];
-const probability_ranges = [
-    {"min_time": 2, "max_time": 5, "total_probability": 0.1},  // 2-5: 10% crash
-    {"min_time": 8, "max_time": 14, "total_probability": 0.1},  // 8-14: 10% crash
-    {"min_time": 16, "max_time": 25, "total_probability": 0.1},  // 16-25: 10% crash
-    {"min_time": 30, "max_time": 35, "total_probability": 0.1},  // 30-35: 10% crash
-    {"min_time": 40, "max_time": 45, "total_probability": 0.1},  // 40-45: 10% crash
-    {"min_time": 50, "max_time": 55, "total_probability": 0.1},  // 50-55: 10% crash
-    ];
+const intervals = [];
+const previousCrashes = [];
 
-const earnElement = document.getElementById("earn");
-const numberInput = document.getElementById("number-input");
-const timerElement = document.getElementById("timer");
-const currentTimeElement = document.getElementById("current-time");
+function simulateCrash() {
+    // Start crash
+    const startTime = Date.now();
+    console.log("Start");
 
-let startTime = Date.now();
-let crashTime = Math.random() * 10 * 1000;
+    const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-// Timer Update
-function updateTimer() {
-    const currentTime = Date.now();
-    const elapsedTime = (currentTime-startTime)/1000;
-    timerElement.textContent = elapsedTime.toFixed(2);
+    (async function loop() {
+        while (intervals.length > 0) {
+            const currentTime = Date.now();
+            const elapsed_time = (currentTime - startTime) / 1000; // Convert to seconds
 
-    if (elapsedTime >= crashTime) {
-        timerElement.textContent = "Crashed!";
-    } else {
-        requestAnimationFrame(updateTimer);
+            if (elapsed_time >= intervals[0]) {
+                const crashedInterval = intervals.shift();
+                previousCrashes.push(crashedInterval);
+
+                // Break out of the loop after the first crash
+                break;
+            }
+
+            // Make timer visualization smooth
+            const sleepTime = Math.min(10, 500 - (currentTime - startTime) % 500);
+            await sleep(sleepTime);
+        }
+
+        console.log("\nCrash");
+        console.log("Previous crashes:");
+        for (const crashTime of previousCrashes) {
+            console.log(`Crashed at ${crashTime.toFixed(2)}x`);
+        }
+    })();
+}
+
+function generateIntervals(probabilityRanges) {
+    const intervals = [];
+    for (const rangeInfo of probabilityRanges) {
+        const minTime = rangeInfo.minTime;
+        const maxTime = rangeInfo.maxTime;
+        const totalProbability = rangeInfo.totalProbability;
+
+        // Calculate the number of intervals based on the total probability
+        const numIntervalsInRange = Math.round(totalProbability * 100); // Assuming probabilities as percentages
+
+        for (let i = 0; i < numIntervalsInRange; i++) {
+            intervals.push(parseFloat((Math.random() * (maxTime - minTime) + minTime).toFixed(2)));
+        }
+    }
+
+    shuffleArray(intervals); // Shuffle the intervals to randomize their order
+    return intervals;
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
     }
 }
-   
-// Exponential Timer
-function exponentialTimer(){
-    startTime = Date.now();
-    crashTime = Math.random() * 10 * 1000;
-    updateTimer();
-}
 
+// Probabilities based on grouping of min - max times (as percentages)
+const probabilityRanges = [
+    { minTime: 1.00, maxTime: 1.50, totalProbability: 0.05 }, // 2.00-3.00: 10% crash
+    { minTime: 1.50, maxTime: 2.10, totalProbability: 0.50 }, // 2.00-3.00: 10% crash
+    { minTime: 3.00, maxTime: 4.00, totalProbability: 0.1 }, // 3.00-4.00: 10% crash
+    { minTime: 4.00, maxTime: 5.00, totalProbability: 0.1 }, // 4.00-5.00: 10% crash
+    { minTime: 5.00, maxTime: 6.00, totalProbability: 0.07 }, // 5.00-6.00: 10% crash
+];
 
-// Multiplier
-function multiplyNumber(){
-    const numberInput = document.getElementById("numberInput").value;
-    const parsedNumber = parseFloat(numberInput);
-    const currentTimestamp = parseFloat(timerElement.textContent);
-    
-    const earn = parsedNumber * currentTimestamp; // You can change the multiplier as needed
-    document.getElementById("earn").textContent = "You won $" + earn;
-    clearInterval(timerInterval); // Clear the timer interval after multiplying
-
-}
+(function main() {
+    // Continuously simulate crashes
+    (async function loop() {
+        while (true) {
+            intervals.length = 0; // Clear intervals for each iteration
+            intervals.push(...generateIntervals(probabilityRanges));
+            await simulateCrash();
+            await sleep(1000); // 1-second delay before the next crash simulation
+        }
+    })();
+})();
