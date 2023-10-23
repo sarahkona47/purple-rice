@@ -63,11 +63,12 @@ function shuffleArray(array) {
 
 // Probabilities based on grouping of min - max times (as percentages)
 const probabilityRanges = [
-    { minTime: 1.00, maxTime: 1.50, totalProbability: 0.05 }, // 2.00-3.00: 10% crash
-    { minTime: 1.50, maxTime: 2.10, totalProbability: 0.50 }, // 2.00-3.00: 10% crash
-    { minTime: 3.00, maxTime: 4.00, totalProbability: 0.1 }, // 3.00-4.00: 10% crash
+    { minTime: 1.00, maxTime: 1.50, totalProbability: 0.05 }, // 2.00-3.00: 5% crash
+    { minTime: 1.50, maxTime: 2.00, totalProbability: 0.60 }, // 2.00-3.00: 60% crash
+    { minTime: 3.00, maxTime: 4.00, totalProbability: 0.08 }, // 3.00-4.00: 8% crash
     { minTime: 4.00, maxTime: 5.00, totalProbability: 0.1 }, // 4.00-5.00: 10% crash
-    { minTime: 5.00, maxTime: 6.00, totalProbability: 0.07 }, // 5.00-6.00: 10% crash
+    { minTime: 5.00, maxTime: 6.00, totalProbability: 0.08 }, // 5.00-6.00: 8% crash
+    { minTime: 6.00, maxTime: 20.00, totalProbability: 0.04 }, // 6.00-20.00: 4% crash
 ];
 
 (function main() {
