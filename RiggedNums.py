@@ -6,7 +6,7 @@ intervals = []
 previous_crashes = []
 
 
-# All numbers are just pseudo. Subject to any changes. This is test document. 
+# All numbers are just pseudo. Subject to any changes. This is test document.
 
 def simulate_crash():
     global intervals, previous_crashes
